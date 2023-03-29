@@ -1,14 +1,10 @@
 version: 0.1
-
 phases:
   build:
-    commands:
-      -echo Build set up started
-      -mvn clean package
+    commands: '-echo Build set up started -mvn clean package'
   post_build:
-    commands:
-      -echo Build successful
+    commands: '-echo Build successful'
 artifacts:
   files:
     - target/real-estate-loan-application
-  discard-paths: yes
+  discard-paths: 'yes'
