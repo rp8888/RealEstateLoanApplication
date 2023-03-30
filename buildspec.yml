@@ -8,11 +8,11 @@ phases:
       - echo Entered the build phase...
       - echo Build started on `date`
       - java -version
-      - mvn package
+      - mvn install package
   post_build:
     commands: 
       - echo Build successful...
 artifacts:
   files:
-    - real-estate-loan-application
+    - '**/*'
   discard-paths: 'yes'
