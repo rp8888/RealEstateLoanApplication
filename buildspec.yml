@@ -7,7 +7,7 @@ phases:
       - mvn install
   post_build:
     commands: 
-      -echo Build successful
+      - echo Build successful...
 artifacts:
   files:
     - target/real-estate-loan-application
