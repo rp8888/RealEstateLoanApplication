@@ -14,5 +14,5 @@ phases:
       - echo Build successful...
 artifacts:
   files:
-    - target/real-estate-loan-application
+    - real-estate-loan-application
   discard-paths: 'yes'
