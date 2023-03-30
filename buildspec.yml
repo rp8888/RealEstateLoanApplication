@@ -1,9 +1,13 @@
 version: 0.1
 phases:
   build:
+    install:
+      runtime-versions:
+        java: corretto17
     commands: 
       - echo Entered the build phase...
       - echo Build started on `date`
+      - java -version
       - mvn package
   post_build:
     commands: 
