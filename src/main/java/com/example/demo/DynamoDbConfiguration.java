@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,16 +14,29 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 @Configuration
 public class DynamoDbConfiguration {
 
+	@Value("${Dynamo.DB.Service.Endpoint}")
+	private String dynamoDbServiceEndPoint;
+
+	@Value("${aws.region.value}")
+	private String awsRegion;
+
+	@Value("${Dynamo.DB.accessKey}")
+	private String accessKey;
+
+	@Value("${Dynamo.DB.secretKey}")
+	private String secretKey;
+
 	@Bean
 	public DynamoDBMapper mapper() {
 		return new DynamoDBMapper(dynamoDbConfig());
 	}
-	
+
 	private AmazonDynamoDB dynamoDbConfig() {
 		return AmazonDynamoDBAsyncClientBuilder.standard()
-				.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("dynamodb.eu-central-1.amazonaws.com","eu-central-1"))
-				.withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials("AKIA44OXTLI5K27PJLHU","mrJu9dqHOQfbj3HAtUr2wTr6XJRx564Dja5QRyeW"))).build();
+				.withEndpointConfiguration(
+						new AwsClientBuilder.EndpointConfiguration(dynamoDbServiceEndPoint, awsRegion))
+				.withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
+				.build();
 	}
-
 
 }
