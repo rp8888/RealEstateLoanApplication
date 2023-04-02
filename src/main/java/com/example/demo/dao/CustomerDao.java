@@ -1,7 +1,6 @@
 package com.example.demo.dao;
 
 import com.example.demo.entities.Customer;
-import com.example.demo.entities.Test;
 
 public interface CustomerDao {
 
