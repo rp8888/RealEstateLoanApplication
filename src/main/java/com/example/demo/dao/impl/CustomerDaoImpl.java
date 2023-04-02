@@ -11,9 +11,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.example.demo.dao.CustomerDao;
-import com.example.demo.entities.Application;
 import com.example.demo.entities.Customer;
-import com.example.demo.entities.Test;
 
 @Repository
 public class CustomerDaoImpl implements CustomerDao {
