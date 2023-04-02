@@ -26,20 +26,30 @@ public class CustomerDaoImpl implements CustomerDao {
 	}
 
 	@Override
-	public Customer getCustomerByEmailId(String username) {
+	public Customer getCustomerByEmailId(String username) throws Exception {
+		Customer customer = new Customer();
+		try {
 		DynamoDBScanExpression expression = new DynamoDBScanExpression();
 		expression.addFilterCondition("emailId", new Condition().withComparisonOperator(ComparisonOperator.EQ)
-                .withAttributeValueList(new AttributeValue().withS(username)));
-		Customer customer = mapper.scan(Customer.class, expression).get(0);
+				.withAttributeValueList(new AttributeValue().withS(username)));
+		customer= mapper.scan(Customer.class, expression).get(0);
 		log.info("In getCustomerByEmailId " + customer.getEmailId());
-
+		}catch(Exception e) {
+			throw new Exception("Customer is Not Registered with the Application");
+		}
+ 
 		return customer;
 	}
 
 	@Override
 	public Customer getCustomerByUserId(String userId) {
-		return mapper.load(Customer.class, userId);
+		DynamoDBScanExpression expression = new DynamoDBScanExpression();
+		expression.addFilterCondition("id", new Condition().withComparisonOperator(ComparisonOperator.EQ)
+				.withAttributeValueList(new AttributeValue().withS(userId)));
+		Customer customer = mapper.scan(Customer.class, expression).get(0);
+		log.info("In getCustomerByUserId " + customer.getId());
 
+		return customer;
 	}
 
 }

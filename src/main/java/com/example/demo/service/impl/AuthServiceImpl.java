@@ -21,15 +21,24 @@ public class AuthServiceImpl implements UserDetailsService {
 
 	@Override
 	public User loadUserByUsername(String username) throws UsernameNotFoundException {
-		log.info("##############################################" + username);
-		Customer customer = customerDao.getCustomerByEmailId(username);
-		log.info("&&&&&&&&&&&" + customer.getEmailId());
-		log.info("&&&&&&&&&&&" + customer.getPassword());
+		log.info("Load user by username : " + username);
+		Customer customer;
+		try {
+			customer = customerDao.getCustomerByEmailId(username);
+		} catch (Exception e) {
+			throw new UsernameNotFoundException("User is not registered in this applicaation");
+		}
 		return new User(customer.getEmailId(), customer.getPassword(), Collections.emptyList());
 	}
 
 	public User findById(String userId) {
-		Customer customer = customerDao.getCustomerByEmailId(userId);
-		return new User(customer.getEmailId(), customer.getPassword(), Collections.emptyList());
+		log.info("AuthServiceImpl -> : " + userId);
+		Customer customer;
+		try {
+			customer = customerDao.getCustomerByEmailId(userId);
+		} catch (Exception e) {
+			throw new UsernameNotFoundException("User is not registered in this applicaation");
+		}
+		return new User(customer.getId(), customer.getPassword(), Collections.emptyList());
 	}
 }

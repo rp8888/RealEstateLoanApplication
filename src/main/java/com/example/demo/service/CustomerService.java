@@ -13,11 +13,11 @@ public interface CustomerService {
 
 	public TokenDTO saveCustomerDetails(SignupDto signupDto);
 
-	public void saveApplicationDetails(ApplicationRequestDto applicationRequestDto) throws CustomException;
+	public void saveApplicationDetails(ApplicationRequestDto applicationRequestDto) throws CustomException, Exception;
 
 	public List<ApplicationResponseDto> getAllApplicationDetails();
 
-	public TokenDTO verifyLogin(LoginDTO loginDTO);
+	public TokenDTO verifyLogin(LoginDTO loginDTO) throws Exception;
 
 	public void logOut(TokenDTO dto);
 

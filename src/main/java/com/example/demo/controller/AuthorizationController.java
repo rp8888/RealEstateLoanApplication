@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.SignupDto;
 import com.example.demo.dto.TokenDTO;
-import com.example.demo.entities.RefreshToken;
 import com.example.demo.security.JwtHelper;
 import com.example.demo.service.CustomerService;
 
@@ -34,17 +32,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthorizationController {
 	private static final Logger log = LoggerFactory.getLogger(AuthorizationController.class);
-	
+
 	@Autowired
 	private CustomerService customerService;
-	
+
 	@Autowired
 	AuthenticationManager authenticationManager;
 
 	@Autowired
 	JwtHelper jwtHelper;
-	
-	
+
 	@ApiOperation(value = "Customer Registration for the Application", response = List.class)
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 400, message = "Bad Request"),
 			@ApiResponse(code = 401, message = "Unauthorized"),
@@ -56,24 +53,31 @@ public class AuthorizationController {
 		log.info("In CustomerController class for registration of the customer");
 		return ResponseEntity.ok(tokenDto);
 	}
-	
+
+	@ApiOperation(value = "Login service in to the application", response = String.class)
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 401, message = "Unauthorized"),
+			@ApiResponse(code = 500, message = "Internal Server Error") })
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+	public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) throws Exception {
 		log.info("In CustomerController class for registration of the customer");
 		TokenDTO tokenDto = customerService.verifyLogin(loginDTO);
 		log.info("In CustomerController class for registration of the customer");
 		return ResponseEntity.ok(tokenDto);
 	}
-	
-	 @PostMapping("logout")
-	    public ResponseEntity<?> logout(@RequestBody TokenDTO dto) {
-	        String refreshTokenString = dto.getRefreshToken();
-	        if (jwtHelper.validateRefreshToken(refreshTokenString)) {
-	        	customerService.logOut(dto);
-	            return ResponseEntity.ok().build();
-	        }
 
-	        throw new BadCredentialsException("invalid token");
-	    }
+	@ApiOperation(value = "Logout service for the application", response = String.class)
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 401, message = "Unauthorized"),
+			@ApiResponse(code = 500, message = "Internal Server Error") })
+	@PostMapping("logout")
+	public ResponseEntity<?> logout(@RequestBody TokenDTO dto) {
+		String refreshTokenString = dto.getRefreshToken();
+		if (jwtHelper.validateRefreshToken(refreshTokenString)) {
+			customerService.logOut(dto);
+			return ResponseEntity.ok().build();
+		}
+		throw new BadCredentialsException("invalid token");
+	}
 
 }

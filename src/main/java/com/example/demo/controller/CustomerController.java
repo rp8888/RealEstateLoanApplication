@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.ApplicationRequestDto;
 import com.example.demo.dto.ApplicationResponseDto;
-import com.example.demo.exception.CustomException;
 import com.example.demo.service.CustomerService;
 
 import io.swagger.annotations.Api;
@@ -38,15 +37,12 @@ public class CustomerController {
 	private static final Logger log = LoggerFactory.getLogger(CustomerController.class);
 
 	@ApiOperation(value = "Get All Application Details", response = List.class)
-
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 400, message = "Bad Request"),
-
 			@ApiResponse(code = 401, message = "Unauthorized"),
-
 			@ApiResponse(code = 500, message = "Internal Server Error") })
-
 	@GetMapping(path = "/getAllApplicationDetails", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ApplicationResponseDto>> getAllApplicationDetails(@RequestHeader("Authorization") String authToken) {
+	public ResponseEntity<List<ApplicationResponseDto>> getAllApplicationDetails(
+			@RequestHeader("Authorization") String authToken) {
 		log.info("In CustomerController class for fetching all the applciation details");
 		List<ApplicationResponseDto> applicationResponseDto = customerService.getAllApplicationDetails();
 		log.info("In CustomerController -> Fetched all the application details and the count is ",
@@ -55,16 +51,12 @@ public class CustomerController {
 	}
 
 	@ApiOperation(value = "Save RealEstate Application Loan", response = String.class)
-
 	@ApiResponses({ @ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 400, message = "Bad Request"),
-
 			@ApiResponse(code = 401, message = "Unauthorized"),
-
 			@ApiResponse(code = 500, message = "Internal Server Error") })
-
 	@PostMapping("/saveApplicationDetails")
 	public ResponseEntity<String> saveApplicationDetails(@RequestHeader("Authorization") String authToken,
-			@RequestBody ApplicationRequestDto applicationRequestDto) throws CustomException {
+			@RequestBody ApplicationRequestDto applicationRequestDto) throws Exception {
 		log.info("In CustomerController class for saving the application details");
 		if (null != applicationRequestDto) {
 			customerService.saveApplicationDetails(applicationRequestDto);

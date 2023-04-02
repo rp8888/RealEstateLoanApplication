@@ -27,6 +27,7 @@ public class ApplicationDaoImpl implements ApplicationDao{
 
 	@Override
 	public List<Application> getAllApplicationDetails() {
+		log.info("In ApplicationDaoImpl() Fetchin all the application details");
 		DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
 		return mapper.scan(Application.class, scanExpression);
 	}
