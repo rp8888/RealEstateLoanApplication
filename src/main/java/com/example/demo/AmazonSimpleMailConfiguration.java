@@ -37,13 +37,13 @@ public class AmazonSimpleMailConfiguration {
 				.build();
 	}
 
-	public void createAndSendMailContent(String mailId, String name, String password) {
+	public void createAndSendMailContent(String mailId, String name) {
 		SendEmailRequest sendMailRequest = new SendEmailRequest()
 				.withDestination(new Destination().withToAddresses(mailId)).withMessage(
 						new Message().withSubject(new Content().withData("RealEstate Loan Confirmation"))
 								.withSubject(new Content().withData("Hi " + name
-										+ ", To view your application status Please login using your userId as "
-										+ mailId + "and Passwords as " + password)));
+										+ ", To view your application status Please login using your userId and password. Thank you for visiting"
+										)));
 		new AmazonSimpleMailConfiguration().emailConfig().sendEmail(sendMailRequest);
 	}
 

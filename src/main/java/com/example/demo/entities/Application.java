@@ -36,7 +36,7 @@ public class Application implements Serializable {
 	@DynamoDBAttribute
 	private String emailId;
 	@DynamoDBAttribute
-	private Customer customer;
+	private String customerId;
 
 	/**
 	 * @return the id
@@ -165,17 +165,19 @@ public class Application implements Serializable {
 	}
 
 	/**
-	 * @return the customer
+	 * @return the customerId
 	 */
-	public Customer getCustomer() {
-		return customer;
+	public String getCustomerId() {
+		return customerId;
 	}
 
 	/**
-	 * @param customer the customer to set
+	 * @param customerId the customerId to set
 	 */
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
+
+	
 
 }

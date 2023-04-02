@@ -1,19 +1,14 @@
 package com.example.demo.dao;
 
-import java.util.List;
-
-import com.example.demo.dto.ApplicationResponseDto;
-import com.example.demo.entities.Application;
 import com.example.demo.entities.Customer;
+import com.example.demo.entities.Test;
 
 public interface CustomerDao {
 
 	public void saveCustomer(Customer customer);
 
-	public void saveApplication(Application customer);
+	public Customer getCustomerByEmailId(String username);
 
-	public List<ApplicationResponseDto> getAllApplicationDetails();
-
-	public Application getCustomerBySSN(String ssn);
+	public Customer getCustomerByUserId(String userId);
 
 }
