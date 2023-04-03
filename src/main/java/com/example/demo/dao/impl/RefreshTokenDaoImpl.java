@@ -32,7 +32,7 @@ public class RefreshTokenDaoImpl implements RefreshTokenDao {
 		expression.addFilterCondition("id", new Condition().withComparisonOperator(ComparisonOperator.EQ)
                 .withAttributeValueList(new AttributeValue().withS(tokenIdFromRefreshToken)));
 		RefreshToken refreshToken = mapper.scan(RefreshToken.class, expression).get(0);
-		log.info("In RefreshTokenDaoImpl fetching refresk token " + tokenIdFromRefreshToken);
+		log.debug("In RefreshTokenDaoImpl fetching refresk token " + tokenIdFromRefreshToken);
 
 		return null!=refreshToken?true:false;
 	}

@@ -21,7 +21,7 @@ public class AuthServiceImpl implements UserDetailsService {
 
 	@Override
 	public User loadUserByUsername(String username) throws UsernameNotFoundException {
-		log.info("Load user by username : " + username);
+		log.debug("Load user by username : " + username);
 		Customer customer;
 		try {
 			customer = customerDao.getCustomerByEmailId(username);
@@ -32,7 +32,7 @@ public class AuthServiceImpl implements UserDetailsService {
 	}
 
 	public User findById(String userId) {
-		log.info("AuthServiceImpl -> : " + userId);
+		log.debug("AuthServiceImpl -> : " + userId);
 		Customer customer;
 		try {
 			customer = customerDao.getCustomerByEmailId(userId);

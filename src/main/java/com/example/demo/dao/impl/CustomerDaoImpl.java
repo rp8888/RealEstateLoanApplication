@@ -33,9 +33,9 @@ public class CustomerDaoImpl implements CustomerDao {
 		expression.addFilterCondition("emailId", new Condition().withComparisonOperator(ComparisonOperator.EQ)
 				.withAttributeValueList(new AttributeValue().withS(username)));
 		customer= mapper.scan(Customer.class, expression).get(0);
-		log.info("In getCustomerByEmailId " + customer.getEmailId());
+		log.debug("In getCustomerByEmailId " + customer.getEmailId());
 		}catch(Exception e) {
-			throw new Exception("Customer is Not Registered with the Application");
+			throw new Exception("Specify the correct mail address");
 		}
  
 		return customer;
@@ -47,7 +47,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		expression.addFilterCondition("id", new Condition().withComparisonOperator(ComparisonOperator.EQ)
 				.withAttributeValueList(new AttributeValue().withS(userId)));
 		Customer customer = mapper.scan(Customer.class, expression).get(0);
-		log.info("In getCustomerByUserId " + customer.getId());
+		log.debug("In getCustomerByUserId " + customer.getId());
 
 		return customer;
 	}

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.ApplicationRequestDto;
 import com.example.demo.dto.ApplicationResponseDto;
+import com.example.demo.entities.Application;
 import com.example.demo.service.CustomerService;
 
 import io.swagger.annotations.Api;
@@ -41,11 +43,11 @@ public class CustomerController {
 			@ApiResponse(code = 401, message = "Unauthorized"),
 			@ApiResponse(code = 500, message = "Internal Server Error") })
 	@GetMapping(path = "/getAllApplicationDetails", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ApplicationResponseDto>> getAllApplicationDetails(
+	public ResponseEntity<List<Application>> getAllApplicationDetails(
 			@RequestHeader("Authorization") String authToken) {
-		log.info("In CustomerController class for fetching all the applciation details");
-		List<ApplicationResponseDto> applicationResponseDto = customerService.getAllApplicationDetails();
-		log.info("In CustomerController -> Fetched all the application details and the count is ",
+		log.debug("In CustomerController class for fetching all the applciation details");
+		List<Application> applicationResponseDto = customerService.getAllApplicationDetails();
+		log.debug("In CustomerController -> Fetched all the application details and the count is ",
 				applicationResponseDto.size());
 		return new ResponseEntity<>(applicationResponseDto, HttpStatus.OK);
 	}
@@ -57,13 +59,28 @@ public class CustomerController {
 	@PostMapping("/saveApplicationDetails")
 	public ResponseEntity<String> saveApplicationDetails(@RequestHeader("Authorization") String authToken,
 			@RequestBody ApplicationRequestDto applicationRequestDto) throws Exception {
-		log.info("In CustomerController class for saving the application details");
+		log.debug("In CustomerController class for saving the application details");
 		if (null != applicationRequestDto) {
 			customerService.saveApplicationDetails(applicationRequestDto);
-			log.info("In CustomerController -> Application Submitted Successfully");
+			log.debug("In CustomerController -> Application Submitted Successfully");
 			return new ResponseEntity<>("Application Submitted Successfully", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("Please Fill In The Application Details", HttpStatus.BAD_REQUEST);
 	}
 
+	@ApiOperation(value = "Fetch Application Detail for Customer", response = String.class)
+	@ApiResponses({ @ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 401, message = "Unauthorized"),
+			@ApiResponse(code = 500, message = "Internal Server Error") })
+	@PostMapping("/getApplicationDetails/{emailId}")
+	public ResponseEntity<ApplicationResponseDto> getApplicationDetailForCustomer(@RequestHeader("Authorization") String authToken,
+			@PathVariable String emailId) throws Exception {
+		log.debug("In CustomerController class for fetching the application details for customer");
+		if (null != emailId) {
+			ApplicationResponseDto applicationResponseDto =customerService.getApplicationDetailForCustomer(emailId);
+			log.debug("In CustomerController -> Application Submitted Successfully");
+			return new ResponseEntity<>(applicationResponseDto, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
 }

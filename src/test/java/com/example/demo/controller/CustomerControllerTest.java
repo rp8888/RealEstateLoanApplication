@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.demo.dto.ApplicationRequestDto;
-import com.example.demo.dto.ApplicationResponseDto;
+import com.example.demo.entities.Application;
 import com.example.demo.service.CustomerService;
 
 @RunWith(SpringRunner.class)
@@ -34,7 +34,7 @@ public class CustomerControllerTest {
 
 	@Test
 	public void testGetAllApplicationDetails() throws Exception {
-		List<ApplicationResponseDto> applicationResponseDtoList = new ArrayList<>();
+		List<Application> applicationResponseDtoList = new ArrayList<>();
 		when(customerService.getAllApplicationDetails()).thenReturn(applicationResponseDtoList);
 		assertNotNull(customerController.getAllApplicationDetails(""));
 	}

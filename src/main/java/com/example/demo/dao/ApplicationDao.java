@@ -9,4 +9,6 @@ public interface ApplicationDao {
 	public void saveApplication(Application application);
 
 	public List<Application> getAllApplicationDetails();
+
+	public Application getApplicationDetailsByCustomerId(String id);
 }

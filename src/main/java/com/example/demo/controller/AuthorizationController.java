@@ -48,9 +48,9 @@ public class AuthorizationController {
 			@ApiResponse(code = 500, message = "Internal Server Error") })
 	@PostMapping("/register")
 	public ResponseEntity<TokenDTO> register(@RequestBody SignupDto signupDto) {
-		log.info("In CustomerController class for registration of the customer");
+		log.debug("In CustomerController class for registration of the customer");
 		TokenDTO tokenDto = customerService.saveCustomerDetails(signupDto);
-		log.info("In CustomerController class for registration of the customer");
+		log.debug("In CustomerController class for registration of the customer");
 		return ResponseEntity.ok(tokenDto);
 	}
 
@@ -60,9 +60,9 @@ public class AuthorizationController {
 			@ApiResponse(code = 500, message = "Internal Server Error") })
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) throws Exception {
-		log.info("In CustomerController class for registration of the customer");
+		log.debug("In CustomerController class for registration of the customer");
 		TokenDTO tokenDto = customerService.verifyLogin(loginDTO);
-		log.info("In CustomerController class for registration of the customer");
+		log.debug("In CustomerController class for registration of the customer");
 		return ResponseEntity.ok(tokenDto);
 	}
 

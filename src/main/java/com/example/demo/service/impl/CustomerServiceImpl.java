@@ -67,10 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
 			customer.setCustomerType("Customer");
 			customerDao.saveCustomer(customer);
 		}
-		RefreshToken refreshToken = new RefreshToken();
-		refreshToken.setId(customer.getId());
-		refreshToken.setOwner(customer);
-		refreshTokenDao.saveRefreshToken(refreshToken);
+		RefreshToken refreshToken = saveRefreshTokenDetails(customer);
 		String accessToken = jwtHelper
 				.generateAccessToken(new User(customer.getEmailId(), customer.getPassword(), Collections.emptyList()));
 		String refreshTokenString = jwtHelper.generateRefreshToken(
@@ -78,9 +75,17 @@ public class CustomerServiceImpl implements CustomerService {
 		return new TokenDTO(customer.getId(), accessToken, refreshTokenString);
 	}
 
+	private RefreshToken saveRefreshTokenDetails(Customer customer) {
+		RefreshToken refreshToken = new RefreshToken();
+		refreshToken.setId(customer.getId());
+		refreshToken.setOwner(customer);
+		refreshTokenDao.saveRefreshToken(refreshToken);
+		return refreshToken;
+	}
+
 	@Override
 	public void saveApplicationDetails(ApplicationRequestDto applicationRequestDto) throws Exception {
-		log.info("In Service layer -> started ");
+		log.debug("In Service layer -> started ");
 		if (null != applicationRequestDto.getEmailId()) {
 			Customer customer = customerDao.getCustomerByEmailId(applicationRequestDto.getEmailId());
 			if (null != customer) {
@@ -91,20 +96,19 @@ public class CustomerServiceImpl implements CustomerService {
 				applicationDao.saveApplication(applicationRequest);
 				// emailConfig.createAndSendMailContent(applicationRequest.getEmailId(),
 				// applicationRequest.getFullName());
-				log.info("In Service layer -> Application created and email sent to the customer ");
+				log.debug("In Service layer -> Application created and email sent to the customer ");
 			} else {
 				throw new CustomException("Customer Already Exists");
 			}
 		}
-		log.info("In Service layer -> ended ");
+		log.debug("In Service layer -> ended ");
 	}
 
 	@Override
-	public List<ApplicationResponseDto> getAllApplicationDetails() {
+	public List<Application> getAllApplicationDetails() {
 		List<ApplicationResponseDto> applicationResponseDto = new ArrayList<>();
 		List<Application> applicationDetails = applicationDao.getAllApplicationDetails();
-		modelMapper.map(applicationDetails, applicationResponseDto);
-		return applicationResponseDto;
+		return applicationDetails;
 	}
 
 	@Override
@@ -114,10 +118,7 @@ public class CustomerServiceImpl implements CustomerService {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		User user = (User) authentication.getPrincipal();
 		Customer customer = customerDao.getCustomerByEmailId(user.getUsername());
-		RefreshToken refreshToken = new RefreshToken();
-		refreshToken.setId(customer.getId());
-		refreshToken.setOwner(customer);
-		refreshTokenDao.saveRefreshToken(refreshToken);
+		RefreshToken refreshToken = saveRefreshTokenDetails(customer);
 		String accessToken = jwtHelper.generateAccessToken(user);
 		String refreshTokenString = jwtHelper.generateRefreshToken(user, refreshToken);
 		return new TokenDTO(customer.getId(), accessToken, refreshTokenString);
@@ -130,6 +131,17 @@ public class CustomerServiceImpl implements CustomerService {
 			refreshTokenDao.deleteById(tokeId);
 		}
 
+	}
+
+	@Override
+	public ApplicationResponseDto getApplicationDetailForCustomer(String emailId) throws Exception {
+		Customer customer = customerDao.getCustomerByEmailId(emailId);
+		ApplicationResponseDto applicationResponseDto = new ApplicationResponseDto();
+		if(null!=customer) {
+			Application application = applicationDao.getApplicationDetailsByCustomerId(customer.getId());
+			modelMapper.map(application, applicationResponseDto);
+		}
+		return applicationResponseDto;
 	}
 
 }

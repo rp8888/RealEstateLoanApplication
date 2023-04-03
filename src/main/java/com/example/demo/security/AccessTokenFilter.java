@@ -37,7 +37,6 @@ public class AccessTokenFilter extends OncePerRequestFilter {
             Optional<String> accessToken = parseAccessToken(request);
             if(accessToken.isPresent() && jwtHelper.validateAccessToken(accessToken.get())) {
                 String emailId = jwtHelper.getUserIdFromAccessToken(accessToken.get());
-                log.info("##########################"+ emailId);
                 User user = authServiceImpl.findById(emailId);
                 UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
