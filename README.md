@@ -11,9 +11,10 @@ https://github.com/rp8888/RealEstateLoanApplication
 ### Guides
 The following guides illustrate how to use some features concretely:
 Import the project in eclipse or intellij
-and run the project as Springboot application
+--->Build the project. Command: mvn package
+--->and run the project as Springboot application
 
-you can also use mvn spring-boot:run command in cmd
+--->you can also use mvn spring-boot:run command in cmd
 
 Application runs on localhost and the url is http://localhost:8080/swagger-ui.html
 
